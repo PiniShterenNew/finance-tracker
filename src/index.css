@@ -4,16 +4,15 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
   direction: rtl;
-  background-color: #f8fafc;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
 }
 
 * {
   box-sizing: border-box;
 }
-
-
 
 @layer base {
   :root {
@@ -23,7 +22,7 @@ body {
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 217 91% 60%;  /* Modern blue */
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -35,14 +34,21 @@ body {
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 217 91% 60%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+    
+    /* Modern shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
+  
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -50,7 +56,7 @@ body {
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
+    --primary: 217 91% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -62,7 +68,7 @@ body {
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 217 91% 60%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -71,13 +77,407 @@ body {
   }
 }
 
-
-
 @layer base {
-  * {
-    @apply border-border;
+  :root {
+    /* Desktop sizes (default) - More refined typography */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    
+    /* Better spacing system */
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-6: 1.5rem;
+    --spacing-8: 2rem;
+    --spacing-12: 3rem;
+    
+    /* Modern component sizes */
+    --button-height: 2.75rem;
+    --input-height: 2.75rem;
+    --card-padding: 1.5rem;
+    --container-padding: 1rem;
+    --border-radius: 0.75rem;
+    --border-radius-lg: 1rem;
   }
+
+  /* Mobile breakpoint - Enhanced for touch */
+  @media (max-width: 768px) {
+    :root {
+      /* Optimized mobile typography */
+      --text-xs: 0.875rem;    /* Larger for readability */
+      --text-sm: 1rem;        
+      --text-base: 1.125rem;  
+      --text-lg: 1.25rem;     
+      --text-xl: 1.5rem;      
+      --text-2xl: 1.875rem;   
+      --text-3xl: 2.25rem;    
+      --text-4xl: 2.75rem;    
+      
+      /* Touch-friendly spacing */
+      --spacing-1: 0.5rem;    
+      --spacing-2: 0.75rem;   
+      --spacing-3: 1rem;      
+      --spacing-4: 1.5rem;    
+      --spacing-6: 2rem;      
+      --spacing-8: 2.5rem;    
+      --spacing-12: 4rem;     
+      
+      /* Bigger touch targets */
+      --button-height: 3.5rem;      /* Extra large for easy touch */
+      --input-height: 3.5rem;       
+      --card-padding: 1.5rem;       
+      --container-padding: 1rem;    
+      --border-radius: 1rem;        /* Softer corners */
+      --border-radius-lg: 1.25rem;  
+    }
+  }
+
+  /* Typography improvements */
   body {
-    @apply bg-background text-foreground;
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, .text-3xl {
+    font-size: var(--text-3xl) !important;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+  
+  h2, .text-2xl {
+    font-size: var(--text-2xl) !important;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  
+  h3, .text-xl {
+    font-size: var(--text-xl) !important;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  .text-xs {
+    font-size: var(--text-xs) !important;
+  }
+  
+  .text-sm {
+    font-size: var(--text-sm) !important;
+  }
+  
+  .text-lg {
+    font-size: var(--text-lg) !important;
+    font-weight: 500;
+  }
+  
+  .text-4xl {
+    font-size: var(--text-4xl) !important;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  /* Enhanced component styling */
+  .p-6 {
+    padding: var(--card-padding) !important;
+  }
+  
+  .p-4 {
+    padding: var(--spacing-4) !important;
+  }
+  
+  .py-8 {
+    padding-top: var(--spacing-8) !important;
+    padding-bottom: var(--spacing-8) !important;
+  }
+  
+  .px-4 {
+    padding-left: var(--spacing-4) !important;
+    padding-right: var(--spacing-4) !important;
+  }
+  
+  .container {
+    padding-left: var(--container-padding) !important;
+    padding-right: var(--container-padding) !important;
+  }
+
+  /* Modern button styling */
+  .h-9, button, .btn {
+    height: var(--button-height) !important;
+    min-height: var(--button-height) !important;
+    border-radius: var(--border-radius) !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease-in-out !important;
+    font-size: var(--text-sm) !important;
+  }
+  
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  button:active {
+    transform: translateY(0);
+  }
+  
+  /* Enhanced input styling */
+  input[type="text"], 
+  input[type="number"], 
+  input[type="email"],
+  input[type="password"],
+  textarea, 
+  select,
+  .input {
+    height: var(--input-height) !important;
+    min-height: var(--input-height) !important;
+    border-radius: var(--border-radius) !important;
+    border: 2px solid hsl(var(--border)) !important;
+    font-size: var(--text-base) !important;
+    transition: all 0.2s ease-in-out !important;
+    padding: 0 1rem !important;
+  }
+  
+  input:focus, textarea:focus, select:focus {
+    border-color: hsl(var(--primary)) !important;
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1) !important;
+    outline: none !important;
+  }
+  
+  textarea {
+    min-height: calc(var(--input-height) * 2.5) !important;
+    padding: 1rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Card enhancements */
+  .card, [class*="card"] {
+    border-radius: var(--border-radius-lg) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: all 0.3s ease-in-out !important;
+    background: hsl(var(--card)) !important;
+  }
+  
+  .card:hover {
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-2px) !important;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  /* Better touch targets */
+  button, a, [role="button"] {
+    min-height: 48px !important; /* Larger minimum for accessibility */
+    min-width: 48px !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+  
+  /* Improved spacing */
+  .space-y-4 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 2.5rem !important;
+  }
+  
+  .gap-4 {
+    gap: 1.5rem !important;
+  }
+  
+  .gap-6 {
+    gap: 2.5rem !important;
+  }
+  
+  /* Mobile grid improvements */
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+  
+  /* Better select dropdowns */
+  [role="combobox"], [role="listbox"] {
+    min-height: 3.5rem !important;
+    font-size: 1.125rem !important;
+    padding: 0 1rem !important;
+  }
+  
+  /* Enhanced icons */
+  .h-4.w-4 {
+    height: 1.25rem !important;
+    width: 1.25rem !important;
+  }
+  
+  .h-5.w-5 {
+    height: 1.5rem !important;
+    width: 1.5rem !important;
+  }
+  
+  .h-6.w-6 {
+    height: 1.75rem !important;
+    width: 1.75rem !important;
+  }
+  
+  /* Better readability */
+  p, div, span {
+    line-height: 1.7 !important;
+  }
+  
+  /* Softer design */
+  .rounded-xl {
+    border-radius: var(--border-radius-lg) !important;
+  }
+  
+  .rounded-lg {
+    border-radius: var(--border-radius) !important;
+  }
+  
+  .rounded-md {
+    border-radius: calc(var(--border-radius) * 0.75) !important;
+  }
+  
+  /* Mobile navigation improvements */
+  nav {
+    padding: 1rem !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+  
+  /* Better card spacing on mobile */
+  .container > * + * {
+    margin-top: 2rem !important;
+  }
+  
+  /* Toast improvements */
+  .toast, [role="alert"] {
+    border-radius: var(--border-radius) !important;
+    padding: 1rem 1.5rem !important;
+    font-size: var(--text-base) !important;
+    min-height: 3rem !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+}
+
+/* Additional modern touches */
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%) !important;
+  }
+  
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+}
+
+/* Focus improvements for accessibility */
+@layer base {
+  *:focus-visible {
+    outline: 2px solid hsl(var(--primary)) !important;
+    outline-offset: 2px !important;
+    border-radius: 4px !important;
+  }
+  
+  button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2) !important;
+  }
+}
+
+
+/* Mobile Tabs Fix */
+@media (max-width: 768px) {
+  /* Fix tabs specifically */
+  [role="tablist"] {
+    padding: 0.25rem !important;
+  }
+  
+  [role="tab"] {
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.75rem !important;
+    min-height: 2.5rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  [role="tab"] svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    margin-left: 0.25rem !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Make sure tabs are clickable */
+  [role="tab"] {
+    touch-action: manipulation !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  /* Grid adjustments for better fit */
+  .grid-cols-3 {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 0.25rem !important;
+  }
+  
+  /* Settings page specific mobile fixes */
+  .space-y-8 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  /* Card responsive improvements */
+  .border-2.border-gray-100 {
+    border-width: 1px !important;
+    padding: 1rem !important;
+  }
+  
+  /* Dialog improvements for mobile */
+  .max-w-2xl {
+    max-width: 95vw !important;
+    margin: 1rem !important;
+  }
+  
+  /* Emoji grid mobile fix */
+  .grid-cols-6.md\\:grid-cols-8 {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  }
+  
+  /* Color grid mobile fix */
+  .grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  }
+  
+  /* Better input sizing on mobile */
+  .w-28 {
+    width: 6rem !important;
+  }
+  
+  .w-40 {
+    width: 8rem !important;
   }
 }
