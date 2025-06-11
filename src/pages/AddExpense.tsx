@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -30,6 +30,58 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState<Date>(new Date());
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // זיהוי אם זה מכשיר מובייל
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // פונקציה לטיפול בשינוי תאריך מ-input type="date"
+  const handleNativeDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = new Date(e.target.value);
+    
+    // בדיקת תאריך עתידי
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+    
+    if (selectedDate > today) {
+      error('לא ניתן להזין תאריך עתידי');
+      return;
+    }
+    
+    setDate(selectedDate);
+  };
+
+  // פונקציה לטיפול בשינוי תאריך מלוח השנה
+  const handleCalendarDateChange = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      const today = new Date();
+      today.setHours(23, 59, 59, 999);
+      
+      if (selectedDate > today) {
+        error('לא ניתן להזין תאריך עתידי');
+        return;
+      }
+      
+      setDate(selectedDate);
+    }
+  };
+
+  // המרת תאריך לפורמט YYYY-MM-DD עבור input type="date"
+  const formatDateForInput = (date: Date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  // חישוב התאריך המקסימלי (היום)
+  const maxDate = formatDateForInput(new Date());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +100,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
     // Check if date is in the future
     const today = new Date();
-    today.setHours(23, 59, 59, 999); // End of today
+    today.setHours(23, 59, 59, 999);
     if (date > today) {
       error('לא ניתן להזין תאריך עתידי');
       return;
@@ -123,40 +175,62 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                     />
                   </div>
 
-                  {/* Date */}
+                  {/* Date - במובייל input טבעי, בדסקטופ לוח שנה */}
                   <div className="space-y-2">
                     <Label>תאריך</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !date && "text-muted-foreground"
-                          )}
+                    {isMobile ? (
+                      // Input טבעי למובייל
+                      <Input
+                        type="date"
+                        value={formatDateForInput(date)}
+                        onChange={handleNativeDateChange}
+                        max={maxDate}
+                        min="2020-01-01"
+                        required
+                        className="w-full"
+                      />
+                    ) : (
+                      // לוח שנה לדסקטופ
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !date && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {date ? date.toLocaleDateString('he-IL', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric'
+                            }) : "בחר תאריך"}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-auto p-0 max-w-[calc(100vw-2rem)]"
+                          align="start"
+                          side="bottom"
+                          sideOffset={8}
+                          avoidCollisions={true}
+                          collisionPadding={16}
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? date.toLocaleDateString('he-IL', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                          }) : "בחר תאריך"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={(selectedDate) => selectedDate && setDate(selectedDate)}
-                          disabled={(date) => {
-                            const today = new Date();
-                            today.setHours(23, 59, 59, 999);
-                            return date > today || date < new Date("2020-01-01");
-                          }}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                          <Calendar
+                            mode="single"
+                            selected={date}
+                            onSelect={handleCalendarDateChange}
+                            disabled={(date) => {
+                              const today = new Date();
+                              today.setHours(23, 59, 59, 999);
+                              return date > today || date < new Date("2020-01-01");
+                            }}
+                            initialFocus
+                            className="rounded-md border-0"
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    )}
                   </div>
                 </div>
 
@@ -194,7 +268,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex gap-3">
+                <div className="flex flex-col md:flex-row gap-3">
                   <Button
                     type="submit"
                     className="flex-1"
@@ -256,10 +330,10 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">תאריך:</span>
                       <span className="text-sm">
-                        {date.toLocaleDateString('he-IL', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
+                        {date.toLocaleDateString('he-IL', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
                         })}
                       </span>
                     </div>

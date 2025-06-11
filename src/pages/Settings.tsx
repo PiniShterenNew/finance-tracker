@@ -141,7 +141,7 @@ export function Settings() {
         </div>
       </div>
 
-      <Tabs defaultValue="budgets" className="space-y-6">
+      <Tabs defaultValue="budgets" className="space-y-6" dir="rtl">
         {/* Mobile-optimized TabsList */}
         <div className="md:hidden">
           <TabsList className="grid w-full grid-cols-3 h-16 p-1 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
@@ -325,7 +325,7 @@ export function Settings() {
 
                   {/* Mobile optimized dialog */}
                   <DialogContent className=" w-full max-h-full overflow-y-auto p-4">
-                    <DialogHeader className="pb-4">
+                    <DialogHeader className="pb-4 flex flex-col items-center">
                       <DialogTitle className="flex items-center gap-2 text-lg">
                         <Sparkles className="h-5 w-5 text-purple-500" />
                         הוסף קטגוריה
@@ -349,14 +349,14 @@ export function Settings() {
 
                       <div>
                         <Label className="text-sm font-medium">בחר אמוג'י</Label>
-                        <div className="grid grid-cols-8 gap-2 mt-2">
+                        <div className="grid grid-cols-6 md:grid-cols-8 gap-2 mt-2">
                           {AVAILABLE_EMOJIS.map((emoji) => (
                             <button
                               key={emoji}
                               type="button"
                               onClick={() => setNewCategoryEmoji(emoji)}
                               className={cn(
-                                "p-2 text-lg rounded-lg border-2 transition-all duration-200",
+                                "p-2 text-lg flex items-center justify-center rounded-lg border-2 transition-all duration-200",
                                 newCategoryEmoji === emoji
                                   ? 'border-purple-500 bg-purple-50 shadow-md'
                                   : 'border-gray-200'

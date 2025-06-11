@@ -26,12 +26,12 @@ export function ToastContainer() {
   };
 
   return (
-    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 space-y-2">
+    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[100] space-y-2">
       {toasts.map((toast) => (
         <Card
           key={toast.id}
           className={cn(
-            "p-4 min-w-80 shadow-lg animate-in slide-in-from-top-2 duration-300",
+            "p-4 min-w-96 shadow-lg animate-in slide-in-from-top-2 duration-300",
             getColorClasses(toast.type)
           )}
         >

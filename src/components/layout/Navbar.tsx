@@ -45,8 +45,8 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation - Enhanced */}
-          <NavigationMenu className='hidden md:flex'>
-            <NavigationMenuList className="gap-2">
+          <NavigationMenu className='hidden md:flex '>
+            <NavigationMenuList className="gap-2 flex-row-reverse">
               {navItems.map(({ path, icon: Icon, label }) => (
                 <NavigationMenuItem key={path}>
                   <Button
