@@ -5,6 +5,7 @@ import { BarChart3, Plus, List, Home, Settings, Menu, X, Sun, Moon } from 'lucid
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
@@ -16,11 +17,12 @@ export function Navbar() {
     setIsSheetOpen(false);
   };
 
+  const { t } = useLanguage();
   const navItems = [
-    { path: '/', icon: Home, label: 'דשבורד' },
-    { path: '/add', icon: Plus, label: 'הוסף הוצאה' },
-    { path: '/expenses', icon: List, label: 'רשימת הוצאות' },
-    { path: '/settings', icon: Settings, label: 'הגדרות' }
+    { path: '/', icon: Home, label: t('nav.dashboard') },
+    { path: '/add', icon: Plus, label: t('nav.addExpense') },
+    { path: '/expenses', icon: List, label: t('nav.expenses') },
+    { path: '/settings', icon: Settings, label: t('nav.settings') }
   ];
   const { theme, toggleTheme } = useTheme();
 
@@ -159,7 +161,7 @@ export function Navbar() {
                   ) : (
                     <Moon className="h-5 w-5 mr-4" />
                   )}
-                  <span>{theme === 'dark' ? 'בהיר' : 'כהה'}</span>
+                  <span>{theme === 'dark' ? t('nav.light') : t('nav.dark')}</span>
                 </Button>
               </div>
 

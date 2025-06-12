@@ -55,7 +55,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
     today.setHours(23, 59, 59, 999);
     
     if (selectedDate > today) {
-      error('לא ניתן להזין תאריך עתידי');
+      error(t('addExpense.dateFuture'));
       return;
     }
     
@@ -69,7 +69,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
       today.setHours(23, 59, 59, 999);
       
       if (selectedDate > today) {
-        error('לא ניתן להזין תאריך עתידי');
+        error(t('addExpense.dateFuture'));
         return;
       }
       
@@ -90,13 +90,13 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
     // Validation
     if (!amount || !category || !description) {
-      error('יש להזין את כל הפרטים');
+      error(t('addExpense.missingFields'));
       return;
     }
 
     const numAmount = parseFloat(amount);
     if (numAmount <= 0) {
-      error('יש להזין סכום גדול מאפס');
+      error(t('addExpense.amountPositive'));
       return;
     }
 
@@ -104,7 +104,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
     const today = new Date();
     today.setHours(23, 59, 59, 999);
     if (date > today) {
-      error('לא ניתן להזין תאריך עתידי');
+      error(t('addExpense.dateFuture'));
       return;
     }
 
@@ -126,11 +126,11 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
       setDescription('');
       setDate(new Date());
 
-      success('ההוצאה נוספה בהצלחה!');
+      success(t('addExpense.success'));
       // Navigate to dashboard after successful add
       setTimeout(() => navigate('/'), 1000);
     } catch (err) {
-      error('שגיאה בהוספת ההוצאה');
+      error(t('addExpense.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -153,10 +153,10 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Plus className="h-5 w-5" />
-                פרטי ההוצאה
+                {t('addExpense.header')}
               </CardTitle>
               <CardDescription>
-                מלא את הפרטים של ההוצאה החדשה
+                {t('addExpense.headerDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -207,7 +207,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                               year: 'numeric',
                               month: 'long',
                               day: 'numeric'
-                            }) : "בחר תאריך"}
+                            }) : t('addExpense.selectDate')}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent
@@ -306,8 +306,8 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>תצוגה מקדימה</CardTitle>
-              <CardDescription>איך ההוצאה תיראה</CardDescription>
+              <CardTitle>{t('addExpense.previewTitle')}</CardTitle>
+              <CardDescription>{t('addExpense.previewDesc')}</CardDescription>
             </CardHeader>
             <CardContent>
               {amount && category && description ? (
@@ -324,13 +324,13 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
                   <div className="border-t pt-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">סכום:</span>
+                      <span className="text-sm text-muted-foreground">{t('addExpense.previewAmount')}</span>
                       <span className="font-bold text-lg">
                         {parseFloat(amount || '0').toLocaleString('he-IL')} ₪
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">תאריך:</span>
+                      <span className="text-sm text-muted-foreground">{t('addExpense.previewDate')}</span>
                       <span className="text-sm">
                         {date.toLocaleDateString('he-IL', {
                           year: 'numeric',
@@ -344,7 +344,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
               ) : (
                 <div className="text-center text-muted-foreground py-8">
                   <div className="text-4xl mb-2">📝</div>
-                  <p>מלא את הפרטים לתצוגה מקדימה</p>
+                  <p>{t('addExpense.previewEmpty')}</p>
                 </div>
               )}
             </CardContent>
