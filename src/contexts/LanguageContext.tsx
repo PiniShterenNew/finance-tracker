@@ -10,7 +10,6 @@ const translations = {
     'nav.settings': 'הגדרות',
     'nav.light': 'בהיר',
     'nav.dark': 'כהה',
-
     'addExpense.title': 'הוסף הוצאה חדשה',
     'addExpense.desc': 'רשום את ההוצאה החדשה שלך',
     'addExpense.amount': 'סכום (₪)',
