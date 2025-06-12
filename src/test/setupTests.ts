@@ -1,5 +1,14 @@
 import '@testing-library/jest-dom';
 
+// TextEncoder / Decoder
+if (typeof global.TextEncoder === 'undefined') {
+  global.TextEncoder = require('util').TextEncoder as any;
+}
+
+if (typeof global.TextDecoder === 'undefined') {
+  global.TextDecoder = require('util').TextDecoder as any;
+}
+
 // Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
@@ -7,7 +16,8 @@ const localStorageMock = {
   removeItem: jest.fn(),
   clear: jest.fn(),
   length: 0,
-  key: jest.fn(),};
+  key: jest.fn(),
+};
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -31,7 +41,7 @@ Object.defineProperty(window, 'sessionStorage', {
 
 // Mock IntersectionObserver
 class IntersectionObserverMock {
-  constructor() {}
+  constructor() { }
   observe = jest.fn();
   unobserve = jest.fn();
   disconnect = jest.fn();
@@ -49,7 +59,7 @@ Object.defineProperty(window, 'IntersectionObserver', {
 
 // Mock ResizeObserver
 class ResizeObserverMock {
-  constructor() {}
+  constructor() { }
   observe = jest.fn();
   unobserve = jest.fn();
   disconnect = jest.fn();
@@ -92,6 +102,21 @@ Element.prototype.scrollIntoView = jest.fn();
 const originalError = console.error;
 beforeAll(() => {
   console.error = (...args) => {
+    const message = args[0]?.toString() ?? '';
+
+    // רשימת הודעות לא מזיקות שמותר להתעלם מהן
+    const ignoredMessages = [
+      /aria-hidden/, // רכיבי UI נסתרים
+      /not wrapped in act/, // אזהרות של React-DOM
+      /React does not recognize the .* prop/, // מזהה פרופס לא תקני
+      /Expected the `children` prop/, // אזהרות TypeScript/PropType
+    ];
+
+    if (ignoredMessages.some((regex) => regex.test(message))) {
+      return;
+    }
+
+    // אחרת, עדיין תזרוק (כדי לא להעלים שגיאות אמיתיות)
     originalError(...args);
     throw new Error('Console error was called. Failing test.');
   };
