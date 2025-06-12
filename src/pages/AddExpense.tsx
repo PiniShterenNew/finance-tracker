@@ -12,6 +12,7 @@ import { Plus, ArrowRight, Calendar as CalendarIcon } from 'lucide-react';
 import { useAppData } from '@/hooks/useAppData';
 import type { Expense } from '@/types/expense';
 import { useToast } from '@/contexts/ToastContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +25,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
   const { allCategories } = useAppData();
   const { success, error } = useToast();
+  const { t } = useLanguage();
 
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -140,8 +142,8 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">הוסף הוצאה חדשה</h1>
-        <p className="text-muted-foreground">רשום את ההוצאה החדשה שלך</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('addExpense.title')}</h1>
+        <p className="text-muted-foreground">{t('addExpense.desc')}</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -162,7 +164,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                 <div className="grid gap-4 md:grid-cols-2">
                   {/* Amount */}
                   <div className="space-y-2">
-                    <Label htmlFor="amount">סכום (₪)</Label>
+                    <Label htmlFor="amount">{t('addExpense.amount')}</Label>
                     <Input
                       id="amount"
                       type="number"
@@ -177,7 +179,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
                   {/* Date - במובייל input טבעי, בדסקטופ לוח שנה */}
                   <div className="space-y-2">
-                    <Label>תאריך</Label>
+                    <Label>{t('addExpense.date')}</Label>
                     {isMobile ? (
                       // Input טבעי למובייל
                       <Input
@@ -236,10 +238,10 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
                 {/* Category */}
                 <div className="space-y-2">
-                  <Label htmlFor="category">קטגוריה</Label>
+                  <Label htmlFor="category">{t('addExpense.category')}</Label>
                   <Select value={category} onValueChange={setCategory} required>
                     <SelectTrigger>
-                      <SelectValue placeholder="בחר קטגוריה" />
+                      <SelectValue placeholder={t('addExpense.category')} />
                     </SelectTrigger>
                     <SelectContent>
                       {allCategories.map((cat) => (
@@ -256,12 +258,12 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
 
                 {/* Description */}
                 <div className="space-y-2">
-                  <Label htmlFor="description">תיאור</Label>
+                  <Label htmlFor="description">{t('addExpense.description')}</Label>
                   <Textarea
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="למשל: קפה בבית קפה, דלק לרכב..."
+                    placeholder={t('addExpense.description')}
                     rows={3}
                     required
                   />
@@ -277,12 +279,12 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                     {isSubmitting ? (
                       <>
                         <LoadingSpinner size="sm" className="mr-2" />
-                        מוסיף...
+                        {t('addExpense.adding')}
                       </>
                     ) : (
                       <>
                         <Plus className="w-4 h-4 mr-2" />
-                        הוסף הוצאה
+                        {t('addExpense.add')}
                       </>
                     )}
                   </Button>
@@ -292,7 +294,7 @@ export function AddExpense({ onAddExpense }: AddExpenseProps) {
                     onClick={() => navigate('/')}
                   >
                     <ArrowRight className="w-4 h-4 mr-2" />
-                    חזור לדשבורד
+                    {t('addExpense.back')}
                   </Button>
                 </div>
               </form>
