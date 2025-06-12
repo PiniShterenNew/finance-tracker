@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { Button } from '@/components/ui/button';
-import { BarChart3, Plus, List, Home, Settings, Menu, X } from 'lucide-react';
+import { BarChart3, Plus, List, Home, Settings, Menu, X, Sun, Moon } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
 
 export function Navbar() {
@@ -21,6 +22,7 @@ export function Navbar() {
     { path: '/expenses', icon: List, label: 'רשימת הוצאות' },
     { path: '/settings', icon: Settings, label: 'הגדרות' }
   ];
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-lg supports-[backdrop-filter]:bg-white/60">
@@ -69,6 +71,15 @@ export function Navbar() {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleTheme}
+            className="hidden md:inline-flex h-11 w-11 rounded-xl hover:bg-gray-100 transition-all"
+          >
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            <span className="sr-only">toggle theme</span>
+          </Button>
 
           {/* Mobile Menu - Enhanced */}
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -109,11 +120,11 @@ export function Navbar() {
 
               {/* Mobile Navigation */}
               <div className="flex flex-col gap-2 p-6">
-                {navItems.map(({ path, icon: Icon, label }) => (
-                  <Button
-                    key={path}
-                    variant={isActive(path) ? 'default' : 'ghost'}
-                    size="lg"
+              {navItems.map(({ path, icon: Icon, label }) => (
+                <Button
+                  key={path}
+                  variant={isActive(path) ? 'default' : 'ghost'}
+                  size="lg"
                     asChild
                     className={cn(
                       "justify-start h-14 rounded-xl font-medium transition-all duration-300",
@@ -137,6 +148,19 @@ export function Navbar() {
                     </Link>
                   </Button>
                 ))}
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onClick={toggleTheme}
+                  className="justify-start h-14 rounded-xl"
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="h-5 w-5 mr-4" />
+                  ) : (
+                    <Moon className="h-5 w-5 mr-4" />
+                  )}
+                  <span>{theme === 'dark' ? 'בהיר' : 'כהה'}</span>
+                </Button>
               </div>
 
               {/* Mobile Footer */}
