@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "types": ["jest", "node"],
     "baseUrl": ".",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "paths": {
       "@/*": ["./src/*"]
     }
